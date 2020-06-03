@@ -1,14 +1,21 @@
 <template>
   <div class="chat-window">
 		<div class="messages">
+			<transition-group enter-active-class="animate__animated animate__zoomInUp" appear="">
+
 			<div class="message" v-for="message in messages" v-bind:key="message._id">
 				<div class="username">{{message.username}}</div>
 				<div class="message-text">{{message.msg}}</div>
 			</div>
+			
+			</transition-group>
 		</div>
 		<form class="input-container" v-on:submit="sendMessage">
 			<input type="text" v-model="msg">
-			<button v-on:click="sendMessage" v-bind:disabled="!msg">Send</button>
+			<button class="btn btn-primary"
+						
+							v-on:click="sendMessage" 
+							v-bind:disabled="!msg">送信</button>
 		</form>
 	</div>
 </template>
@@ -19,7 +26,7 @@ export default {
 	props: ['messages'],
 	data: function () {
 		return {
-			msg: ""
+			msg: "",
 		}
 	},
 	methods: {
@@ -30,6 +37,7 @@ export default {
 			}
 			this.$emit('sendMessage', this.msg);
 			this.msg = "";
+			// this.$scrollTo('#bottom')
 		}
 	}
 }
@@ -41,7 +49,10 @@ export default {
 	display: flex;
 	flex-direction: column;
 	background-color: #F9F9F9;
+	padding: 0 15px 15px;
 	box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.15);
+	overflow: scroll;
+	border-radius: 15px;
 	.messages {
 		flex: 1;
 		overflow: scroll;
