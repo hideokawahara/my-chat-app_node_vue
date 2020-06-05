@@ -1,15 +1,26 @@
 <template>
   <div class="chat-window">
 		<div class="messages">
+			<button @click="scrollToElement">scroll to me</button>
+			<transition-group enter-active-class="animate__animated animate__zoomInUp" appear="">
+				
 			<div class="message" v-for="message in messages" v-bind:key="message._id">
 				<div class="username">{{message.username}}</div>
 				<div class="message-text">{{message.msg}}</div>
 			</div>
+			
+			</transition-group>
+			<div class="scroll-to-me"></div>
 		</div>
+		
 		<form class="input-container" v-on:submit="sendMessage">
 			<input type="text" v-model="msg">
-			<button v-on:click="sendMessage" v-bind:disabled="!msg">Send</button>
+			<button class="btn btn-primary"
+							@click="scrollToElement"
+							v-on:click="sendMessage" 
+							v-bind:disabled="!msg">送信</button>
 		</form>
+		
 	</div>
 </template>
 
@@ -19,7 +30,7 @@ export default {
 	props: ['messages'],
 	data: function () {
 		return {
-			msg: ""
+			msg: "",
 		}
 	},
 	methods: {
@@ -30,8 +41,27 @@ export default {
 			}
 			this.$emit('sendMessage', this.msg);
 			this.msg = "";
+			
+			// this.scrollToElement();
+		},
+		scrollToElement() {
+			const el = this.$el.getElementsByClassName('scroll-to-me')[0];
+
+			if (el) {
+				el.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+			}
 		}
+	},
+	mounted() {
+		this.scrollToElement(false);
+	},
+	// beforeUpdate() {
+	// 	this.scrollToElement(false);
+	// },
+	updated() {
+		this.scrollToElement(false);
 	}
+	
 }
 </script>
 
@@ -41,7 +71,10 @@ export default {
 	display: flex;
 	flex-direction: column;
 	background-color: #F9F9F9;
-	box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.15);
+	padding: 0 15px 15px;
+	box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+	overflow: scroll;
+	border-radius: 15px;
 	.messages {
 		flex: 1;
 		overflow: scroll;

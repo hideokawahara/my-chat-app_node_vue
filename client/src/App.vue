@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <div class="header">
-      <h1>Chatroom</h1>
-      <p class="username">Username: {{ username }}</p>
-      <p class="online">Online: {{ users.length }}</p>
+      <h1 class="logo">conVer</h1>
+      <!-- <img src='./assets/conver.png' class="logo"> -->
+      <p class="username">あなたの名前: {{ username }}</p>
+      <p class="online">今暇な人: {{ users.length }}</p>
     </div>
-    <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
+    
+      <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
+    
   </div>
 </template>
 
@@ -53,10 +56,10 @@ export default {
 		}
    },
   mounted: function () {
-    this.username = prompt("What is your username?", "Anonymous");
+    this.username = prompt("あなたの名前は?", "ゲスト");
 
     if (!this.username) {
-			this.username = "Anonymous";
+			this.username = "ゲスト";
     }
     
     this.joinServer();
@@ -70,6 +73,7 @@ body {
 	color: #2C3E50;
 	margin: 0;
 	padding: 0;
+  background-image: linear-gradient(to bottom right, rgb(241, 207, 233), rgb(170, 226, 243));
 }
 
 #app {
@@ -79,9 +83,37 @@ body {
 	width: 100%;
 	max-width: 768px;
 	margin: 0 auto;
-  padding: 15px;
+  padding: 0 15px 15px;
   box-sizing: border-box;
 }
-</style>
 
-// test
+.header {
+  // background-color: #ffffff;
+  // opacity: 0.5;
+  background: rgba(162, 233, 30, 0.26);
+  margin-bottom: 20px;
+  border-radius: 30px;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  width: auto;
+  height: auto;
+  h1 {
+    color: rgb(9, 211, 26);
+    text-shadow: 1px 3px rgba(0, 0, 0, 0.25); 
+    text-align: center;
+  }
+  // .logo {
+  //  height: 200px;
+  //  width: 400px;
+  //  padding: 0;
+  // }
+  // p {
+  //   // text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+  //   // color: #ffffff;
+  //   // font-weight: bold;
+  //   // box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+    
+  // }
+}
+
+</style>
