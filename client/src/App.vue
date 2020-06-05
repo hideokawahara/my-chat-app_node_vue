@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div class="header">
-      <h1>暇つぶしの部屋</h1>
+      <h1 class="logo">conVer</h1>
+      <!-- <img src='./assets/conver.png' class="logo"> -->
       <p class="username">あなたの名前: {{ username }}</p>
       <p class="online">今暇な人: {{ users.length }}</p>
     </div>
@@ -87,15 +88,32 @@ body {
 }
 
 .header {
-  background-color: #ffffff;
-  opacity: 0.5;
+  // background-color: #ffffff;
+  // opacity: 0.5;
+  background: rgba(162, 233, 30, 0.26);
   margin-bottom: 20px;
   border-radius: 30px;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   padding: 10px;
   width: auto;
   height: auto;
   h1 {
-    color: #ee0909;
+    color: rgb(9, 211, 26);
+    text-shadow: 1px 3px rgba(0, 0, 0, 0.25); 
+    text-align: center;
   }
+  // .logo {
+  //  height: 200px;
+  //  width: 400px;
+  //  padding: 0;
+  // }
+  // p {
+  //   // text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+  //   // color: #ffffff;
+  //   // font-weight: bold;
+  //   // box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+    
+  // }
 }
+
 </style>
