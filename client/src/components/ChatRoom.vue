@@ -1,8 +1,8 @@
 <template>
   <div class="chat-window">
 		<div class="messages">
-			<button @click="scrollToElement">scroll to me</button>
-			<transition-group enter-active-class="animate__animated animate__zoomInUp" appear="">
+			<button class="btn btn-success" @click="scrollToElement">最下部へ↓</button>
+			<transition-group enter-active-class="animate__animated animate__rotateIn" appear="">
 				
 			<div class="message" v-for="message in messages" v-bind:key="message._id">
 				<div class="username">{{message.username}}</div>
@@ -78,10 +78,26 @@ export default {
 	.messages {
 		flex: 1;
 		overflow: scroll;
+		
+		.btn.btn-success {
+			position: fixed;
+			left: 70vw;
+			z-index: 1;
+			background-color: rgba(0, 255, 98, 0.712);
+			&:hover {
+				animation-name: heartBeat;
+        animation-duration: 1s;
+			}
+		}
 		.message {
 			display: flex;
 			border-bottom: 1px solid #EFEFEF;
+			margin-bottom: 10px;
 			padding: 10px;
+			background-color: rgba(7, 243, 231, 0.342);
+			border-radius: 35px 20px 30px 0px;
+			box-shadow: inset 0 0 15px rgba(0,0,0,.3);
+			
 			&:last-of-type {
 				border-bottom: none;
 			}
@@ -91,6 +107,8 @@ export default {
 			}
 			.message-text {
 				flex: 1;
+				font-family: 'Lato', 'Noto Sans JP', 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+				
 			}
 		}
 	}
@@ -101,11 +119,15 @@ export default {
 			height: 35px;
 			font-size: 18px;
 			box-sizing: border-box;
+			
 		}
 		button {
 			width: 75px;
 			height: 35px;
 			box-sizing: border-box;
+		}
+		.btn.btn-primary {
+			margin-left: 5px;
 		}
 	}
 }
