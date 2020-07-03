@@ -1,4 +1,6 @@
 const app = require("express")();
+const path = require('path');
+const serveStatic = require('serve-static');
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const mongoose = require("mongoose");
@@ -6,7 +8,7 @@ let users = [];
 let messages = [];
 
 
-mongoose.connect("mongodb://localhost:27017/chatapp");
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chatapp');
 
 const ChatSchema = mongoose.Schema({
   username: String,
@@ -60,6 +62,16 @@ io.on("connection", socket => {
     users.splice(users.indexOf(socket), 1);
   });
 });
+
+if (process.env.NODE_ENV === 'production') {
+  // Static folder
+  app.use(serveStatic(__dirname + "/public"));
+
+  // Handle SPA
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "public", "index.html"));
+  });
+}
 
 http.listen(process.env.PORT || 3000, () => {
   console.log("Listening on port %s", process.env.PORT || 3000);

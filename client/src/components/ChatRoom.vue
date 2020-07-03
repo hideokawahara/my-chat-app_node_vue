@@ -88,6 +88,10 @@ export default {
 				animation-name: heartBeat;
         animation-duration: 1s;
 			}
+			&:active  {
+				animation-name: wobble;
+        animation-duration: 2s;
+			}
 		}
 		.message {
 			display: flex;
@@ -97,7 +101,8 @@ export default {
 			background-color: rgba(7, 243, 231, 0.342);
 			border-radius: 35px 20px 30px 0px;
 			box-shadow: inset 0 0 15px rgba(0,0,0,.3);
-			
+			white-space: pre-wrap;
+			word-break: break-all;
 			&:last-of-type {
 				border-bottom: none;
 			}

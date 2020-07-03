@@ -26,7 +26,7 @@ export default {
   data: function () {
     return {
       username: "",
-      socket: io("http://localhost:3000"),
+      socket: io("https://conver-chat-hinoizu.herokuapp.com/"),
       messages: [],
       users: []
     }
