@@ -26,7 +26,7 @@ export default {
   data: function () {
     return {
       username: "",
-      socket: io("https://conver-chat-hinoizu.herokuapp.com/"),
+      socket: io(process.env.VUE_APP_API_UR),
       messages: [],
       users: []
     }
