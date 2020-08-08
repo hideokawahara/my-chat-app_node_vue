@@ -131,6 +131,8 @@ body {
   content: "";
   left: 50px;
   top: 0;
+  // width: 50px;
+  // height: 80px;
   width: 50px;
   height: 80px;
   background: #f78cc7f3;

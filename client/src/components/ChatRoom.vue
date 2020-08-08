@@ -13,7 +13,7 @@
 		</div>
 		
 		<form class="input-container" v-on:submit="sendMessage">
-			<input type="text" v-model="msg">
+			<input type="text" v-model="msg" placeholder="ここにメッセージを書いてね">
 			<button class="btn btn-primary"
 							@click="scrollToElement"
 							v-on:click="sendMessage" 
@@ -123,8 +123,12 @@ export default {
 			font-size: 18px;
 			box-sizing: border-box;
 			border-radius: 0px 16px 0px 16px;
-			border-color: #e97bcd;
-			background-color: rgb(248, 209, 235);
+			// border-color: #e97bcd;
+			border-color: rgba(255, 102, 0, 0.25);
+			background-color: #fdedf1;
+			&::placeholder {
+				text-align: center;
+			}
 			&:focus {
 				// box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
 				// background-color: rgba(230, 18, 18, 0.75);
