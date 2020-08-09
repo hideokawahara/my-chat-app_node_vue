@@ -31,7 +31,7 @@ io.on("connection", socket => {
   });
 
   socket.on('newuser', username => {
-    console.log(`${username} has arrived at the party.`);
+    console.log(`${username} がログインしました`);
     socket.username = username;
     users.push(socket);
 
@@ -57,7 +57,7 @@ io.on("connection", socket => {
 
   // Disconnect
   socket.on("disconnect", () => {
-    console.log(`${socket.username} has left the party.`);
+    console.log(`${socket.username} がログアウトしました`);
     io.emit("userLeft", socket.username);
     users.splice(users.indexOf(socket), 1);
   });

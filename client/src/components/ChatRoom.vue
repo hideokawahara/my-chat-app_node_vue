@@ -8,19 +8,17 @@
 				<div class="username">{{message.username}}</div>
 				<div class="message-text">{{message.msg}}</div>
 			</div>
-			
 			</transition-group>
 			<div class="scroll-to-me"></div>
 		</div>
 		
 		<form class="input-container" v-on:submit="sendMessage">
-			<input type="text" v-model="msg">
+			<input type="text" v-model="msg" placeholder="ここにメッセージを書いてね">
 			<button class="btn btn-primary"
 							@click="scrollToElement"
 							v-on:click="sendMessage" 
 							v-bind:disabled="!msg">送信</button>
 		</form>
-		
 	</div>
 </template>
 
@@ -41,8 +39,6 @@ export default {
 			}
 			this.$emit('sendMessage', this.msg);
 			this.msg = "";
-			
-			// this.scrollToElement();
 		},
 		scrollToElement() {
 			const el = this.$el.getElementsByClassName('scroll-to-me')[0];
@@ -55,9 +51,6 @@ export default {
 	mounted() {
 		this.scrollToElement(false);
 	},
-	// beforeUpdate() {
-	// 	this.scrollToElement(false);
-	// },
 	updated() {
 		this.scrollToElement(false);
 	}
@@ -70,20 +63,23 @@ export default {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	background-color: #F9F9F9;
+	// background-color: #F9F9F9;
+	background-color: #eee6ea50;
 	padding: 0 15px 15px;
-	box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+	// box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+	box-shadow: 3px 6px rgba(255, 102, 0, 0.25);
 	overflow: scroll;
 	border-radius: 15px;
 	.messages {
 		flex: 1;
 		overflow: scroll;
-		
 		.btn.btn-success {
 			position: fixed;
 			left: 70vw;
 			z-index: 1;
-			background-color: rgba(0, 255, 98, 0.712);
+			// background-color: rgba(0, 255, 98, 0.712);
+			background-color: rgba(255, 0, 119, 0.712);
+			border-color: #1886b8;
 			&:hover {
 				animation-name: heartBeat;
         animation-duration: 1s;
@@ -98,9 +94,12 @@ export default {
 			border-bottom: 1px solid #EFEFEF;
 			margin-bottom: 10px;
 			padding: 10px;
-			background-color: rgba(7, 243, 231, 0.342);
+			// background-color: rgba(7, 243, 231, 0.342);
+			background-color: #FFF4F7;
+			color: #F2587F;
 			border-radius: 35px 20px 30px 0px;
-			box-shadow: inset 0 0 15px rgba(0,0,0,.3);
+			// box-shadow: inset 0 0 15px rgba(0,0,0,.3);
+			box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.3);
 			white-space: pre-wrap;
 			word-break: break-all;
 			&:last-of-type {
@@ -113,7 +112,6 @@ export default {
 			.message-text {
 				flex: 1;
 				font-family: 'Lato', 'Noto Sans JP', 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
-				
 			}
 		}
 	}
@@ -124,16 +122,42 @@ export default {
 			height: 35px;
 			font-size: 18px;
 			box-sizing: border-box;
-			
+			border-radius: 0px 16px 0px 16px;
+			// border-color: #e97bcd;
+			border-color: rgba(255, 102, 0, 0.25);
+			background-color: #fdedf1;
+			&::placeholder {
+				text-align: center;
+			}
+			&:focus {
+				// box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+				// background-color: rgba(230, 18, 18, 0.75);
+				// border-radius: 16px 0px 16px 0px;
+				// border-color: blue;
+				outline: 0;
+				box-shadow: none;
+				border: 2px solid #e97bcd;
+				box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+				background-color: rgba(255, 255, 255, 0.75);
+				border-radius: 16px 0px 16px 0px;
+				&::placeholder{
+					color: #f17091;
+					font-weight: 800;
+				}
+			}
 		}
 		button {
 			width: 75px;
 			height: 35px;
 			box-sizing: border-box;
+			// background-color: rgba(0, 255, 98, 0.712);
+			background-color: #f17091;
+			border-color: #ff597e;
 		}
 		.btn.btn-primary {
 			margin-left: 5px;
 		}
 	}
 }
+
 </style>
