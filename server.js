@@ -1,4 +1,6 @@
-const app = require("express")();
+// const app = require("express")();
+const express = require("express");
+const app = express();
 const path = require('path');
 const serveStatic = require('serve-static');
 const http = require("http").Server(app);
@@ -7,6 +9,26 @@ const mongoose = require("mongoose");
 let users = [];
 let messages = [];
 
+// ここから改造しています。
+// const { v4: uuidV4 } = require("uuid");
+// app.set("view engine", "vue");
+// app.get("/", (req, res) => {
+//   res.redirect(`/${uuidV4()}`);
+// });
+
+// app.get("/:room", (req, res) => {
+//   res.render("/", { roomId: req.params.room });
+// });
+
+// const { ExpressPeerServer } = require("peer");
+// const peerServer = ExpressPeerServer(http, {
+//   debug: true,
+// });
+// app.use("/peerjs", peerServer);
+// app.use(express.static("public"));
+
+
+// ここまで
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chatapp');
 

@@ -8,15 +8,18 @@
       <div class="heart"></div>
     </div>
       <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
+      <VideoRoom />
   </div>
 </template>
 <script>
 import io from 'socket.io-client';
 import ChatRoom from './components/ChatRoom';
+import VideoRoom from './components/VideoRoom';
 export default {
   name: 'App',
   components: {
-    ChatRoom
+    ChatRoom,
+    VideoRoom
   },
   data: function () {
     return {
