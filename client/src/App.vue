@@ -8,7 +8,7 @@
       <div class="heart"></div>
     </div>
       <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
-      <VideoRoom />
+      <VideoRoom v-bind:username="username" />
   </div>
 </template>
 <script>
@@ -33,14 +33,17 @@ export default {
     joinServer: function () {
       this.socket.on('loggedIn', data => {
         this.messages = data.messages;
-				this.users = data.users;
+        this.users = data.users;
+
+      // 1 ここからサーバーに渡す
 				this.socket.emit('newuser', this.username);
       });
       this.listen();
     },
     listen: function () {
       this.socket.on('userOnline', user => {
-				this.users.push(user);
+        this.users.push(user);
+        console.log('新規ユーザーが入りました')
       });
       this.socket.on('userLeft', user => {
 				this.users.splice(this.users.indexOf(user), 1);
@@ -119,6 +122,7 @@ body {
 }
 
 .heart {
+  display: none;
   position: absolute;
   // width: 100px;
   // height: 90px;

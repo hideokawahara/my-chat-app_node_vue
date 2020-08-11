@@ -10,6 +10,8 @@ let users = [];
 let messages = [];
 
 // ここから改造しています。
+const cors = require("cors");
+app.use(cors());
 // const { v4: uuidV4 } = require("uuid");
 // app.set("view engine", "vue");
 // app.get("/", (req, res) => {
@@ -20,11 +22,11 @@ let messages = [];
 //   res.render("/", { roomId: req.params.room });
 // });
 
-// const { ExpressPeerServer } = require("peer");
-// const peerServer = ExpressPeerServer(http, {
-//   debug: true,
-// });
-// app.use("/peerjs", peerServer);
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(http, {
+  debug: true,
+});
+app.use("/peerjs", peerServer);
 // app.use(express.static("public"));
 
 
@@ -45,25 +47,29 @@ ChatModel.find((err, result) => {
   messages = result;
 });
 
+// ここからがsocketの改造
 
-io.on("connection", socket => {
-  socket.emit('loggedIn', {
-    users: users.map(s => s.username),
-    messages: messages
+io.on("connection", (socket) => {
+  socket.emit("loggedIn", {
+    users: users.map((s) => s.username),
+    messages: messages,
   });
 
-  socket.on('newuser', username => {
+  // 1 ここがログインのクライアントにつながってる。
+  socket.on("newuser", (username) => {
     console.log(`${username} がログインしました`);
     socket.username = username;
     users.push(socket);
+    // ビデオの実装
+    socket.to().broadcast.emit('user-connected')
 
-    io.emit('userOnline', socket.username);
+    io.emit("userOnline", socket.username);
   });
 
-  socket.on('msg', msg => {
+  socket.on("msg", (msg) => {
     let message = new ChatModel({
       username: socket.username,
-      msg: msg
+      msg: msg,
     });
 
     message.save((err, result) => {
@@ -71,10 +77,8 @@ io.on("connection", socket => {
 
       messages.push(result);
 
-      io.emit('msg', result);
+      io.emit("msg", result);
     });
-
-  
   });
 
   // Disconnect
@@ -84,6 +88,51 @@ io.on("connection", socket => {
     users.splice(users.indexOf(socket), 1);
   });
 });
+
+// ここまで
+
+// 前の物
+
+// io.on("connection", socket => {
+//   socket.emit('loggedIn', {
+//     users: users.map(s => s.username),
+//     messages: messages
+//   });
+
+//   socket.on('newuser', username => {
+//     console.log(`${username} がログインしました`);
+//     socket.username = username;
+//     users.push(socket);
+
+//     io.emit('userOnline', socket.username);
+//   });
+
+//   socket.on('msg', msg => {
+//     let message = new ChatModel({
+//       username: socket.username,
+//       msg: msg
+//     });
+
+//     message.save((err, result) => {
+//       if (err) throw err;
+
+//       messages.push(result);
+
+//       io.emit('msg', result);
+//     });
+
+  
+//   });
+
+//   // Disconnect
+//   socket.on("disconnect", () => {
+//     console.log(`${socket.username} がログアウトしました`);
+//     io.emit("userLeft", socket.username);
+//     users.splice(users.indexOf(socket), 1);
+//   });
+// });
+
+// ここまで
 
 if (process.env.NODE_ENV === 'production') {
   // Static folder

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-// import io from 'socket.io-client';
-// import Peer from "peerjs";
+import io from 'socket.io-client';
+import Peer from "peerjs";
 // import jQuery from "jquery";
 // global.jquery = jQuery;
 // global.$ = jQuery;
@@ -17,14 +17,26 @@
 
 export default {
   name: 'videoroom',
-	// props: [''],
+	props: ['username'],
 	data: function () {
 		return {
-			// msg: "",
+      socket: io(process.env.VUE_APP_API_UR),
+      // myPeer: new Peer(undefined, {
+      //   path: '/peerjs',
+      //   host: '/',
+      //   port: '3000'
+      // })
 		}
 	},
 	methods: {
     makevideo() {
+      const myPeer = new Peer(undefined, {
+        path: '/peerjs',
+        host: '/',
+        // port: '443'
+        port: '3000'
+      })
+      console.log(1, myPeer)
       const videoGrid = document.getElementById('video-grid')
       const myVideo = document.createElement('video');
       myVideo.muted = true;
@@ -37,6 +49,23 @@ export default {
         // myVideoStream = stream;
         addVideoStream(myVideo, stream)
       })
+
+      // this.socket.emit('newuser');
+      // this.socket.on('user-connected', () => {
+      //   connectToNewUser();
+      // })
+      myPeer.on('open', id => {
+        console.log(3, id)
+      })
+
+      this.socket.on('loggedIn', () => {
+        // this.socket.emit('newuser', this.props.username);
+        connectToNewUser();
+      });
+
+      const connectToNewUser = () => {
+        console.log('new user')
+      }
 
       const addVideoStream = (video, stream) => {
         video.srcObject = stream
@@ -54,9 +83,16 @@ export default {
 </script>
 
 <style lang="scss">
-  video {
-    flex: 1;
-    width: 100px;
-    height: 100px;
-  }
+#video-grid {
+  display: flex;
+  justify-content: center;
+}
+
+video {
+  // flex: 1;
+  width: 100px;
+  height: 100px;
+  // border-radius: 100%;
+  object-fit: cover;
+}
 </style>
