@@ -43,7 +43,7 @@ export default {
     listen: function () {
       this.socket.on('userOnline', user => {
         this.users.push(user);
-        console.log('新規ユーザーが入りました')
+        console.log('新規ユーザーが入りましたfromApp.vue')
       });
       this.socket.on('userLeft', user => {
 				this.users.splice(this.users.indexOf(user), 1);

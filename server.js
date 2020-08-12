@@ -1,4 +1,3 @@
-// const app = require("express")();
 const express = require("express");
 const app = express();
 const path = require('path');
@@ -10,25 +9,16 @@ let users = [];
 let messages = [];
 
 // ここから改造しています。
-const cors = require("cors");
-app.use(cors());
-// const { v4: uuidV4 } = require("uuid");
-// app.set("view engine", "vue");
-// app.get("/", (req, res) => {
-//   res.redirect(`/${uuidV4()}`);
-// });
 
-// app.get("/:room", (req, res) => {
-//   res.render("/", { roomId: req.params.room });
-// });
+// cors使うとバグりやすい？？
+// const cors = require("cors");
+// app.use(cors());
 
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(http, {
   debug: true,
 });
 app.use("/peerjs", peerServer);
-// app.use(express.static("public"));
-
 
 // ここまで
 
@@ -56,12 +46,13 @@ io.on("connection", (socket) => {
   });
 
   // 1 ここがログインのクライアントにつながってる。
-  socket.on("newuser", (username) => {
+  socket.on("newuser", (username, peerId) => {
     console.log(`${username} がログインしました`);
     socket.username = username;
     users.push(socket);
     // ビデオの実装
-    socket.to().broadcast.emit('user-connected')
+    socket.join(username);
+    socket.to(username).broadcast.emit("loggedIn", peerId);
 
     io.emit("userOnline", socket.username);
   });
@@ -86,6 +77,7 @@ io.on("connection", (socket) => {
     console.log(`${socket.username} がログアウトしました`);
     io.emit("userLeft", socket.username);
     users.splice(users.indexOf(socket), 1);
+    // socket.to(username).broadcast.emit("user-disconnected", peerId);
   });
 });
 
