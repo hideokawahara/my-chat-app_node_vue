@@ -49,7 +49,7 @@ export default {
           })
         })
 
-        this.socket.on('loggedIn', (peerId) => {
+        this.socket.on('loggedIn2', (peerId) => {
           connectToNewUser(peerId, stream);
         });
         
@@ -57,7 +57,7 @@ export default {
       myPeer.on('open', id => {
         console.log('peerIdの生成は成功.videoから', id)
         console.log(this.username)
-        this.socket.emit('newuser', this.username, id);
+        this.socket.emit('newuser2', this.username, id);
   
       })
 

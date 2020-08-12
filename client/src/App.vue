@@ -8,12 +8,11 @@
       <div class="heart"></div>
     </div>
       <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
-      <VideoRoom v-bind:username="username" />
+      <VideoRoom v-bind:username="username" v-bind:socket="socket" />
   </div>
 </template>
 <script>
 import io from 'socket.io-client';
-// import Peer from "peerjs";
 import ChatRoom from './components/ChatRoom';
 import VideoRoom from './components/VideoRoom';
 export default {
@@ -32,22 +31,11 @@ export default {
   },
   methods: {
     joinServer: function () {
-      // const myPeer = new Peer(undefined, {
-      //   path: '/peerjs',
-      //   host: '/',
-      //   // port: '443'
-      //   port: '3000'
-      // })
       this.socket.on('loggedIn', data => {
         this.messages = data.messages;
         this.users = data.users;
-        // myPeer.on('open', id => {
-        //   console.log('peerIdの生成は成功.videoから', id)
-        //   console.log(this.username)
-        //   this.socket.emit('newuser', this.username, id);
-        // })
       // 1 ここからサーバーに渡す
-				// this.socket.emit('newuser', this.username);
+				this.socket.emit('newuser', this.username);
       });
       this.listen();
     },

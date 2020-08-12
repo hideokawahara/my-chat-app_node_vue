@@ -46,17 +46,24 @@ io.on("connection", (socket) => {
   });
 
   // 1 ここがログインのクライアントにつながってる。
-  socket.on("newuser", (username, peerId) => {
+  socket.on("newuser", username => {
     console.log(`${username} がログインしました`);
-    console.log(peerId)
     socket.username = username;
     users.push(socket);
     // ビデオの実装
-    socket.join(username);
-    socket.to(username).broadcast.emit("loggedIn", peerId);
+    // socket.join(username);
+    // socket.to(username).broadcast.emit("loggedIn", peerId);
 
     io.emit("userOnline", socket.username);
   });
+
+  socket.on("newuser2", (username, peerId) => {
+    // ビデオの実装
+    socket.join(username);
+    socket.to(username).broadcast.emit("loggedIn2", peerId);
+  });
+
+
 
   socket.on("msg", (msg) => {
     let message = new ChatModel({
