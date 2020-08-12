@@ -49,11 +49,7 @@ io.on("connection", (socket) => {
   socket.on("newuser", username => {
     console.log(`${username} がログインしました`);
     socket.username = username;
-    users.push(socket);
-    // ビデオの実装
-    // socket.join(username);
-    // socket.to(username).broadcast.emit("loggedIn", peerId);
-
+    users.push(socket);  
     io.emit("userOnline", socket.username);
   });
 

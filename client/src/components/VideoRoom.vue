@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import Peer from "peerjs";
 
 export default {
   name: 'videoroom',
-	props: ['username'],
+	props: ['username', 'socket'],
 	data: function () {
 		return {
-      socket: io(process.env.VUE_APP_API_UR)
+      // socket: io(process.env.VUE_APP_API_UR)
 		}
 	},
 	methods: {
