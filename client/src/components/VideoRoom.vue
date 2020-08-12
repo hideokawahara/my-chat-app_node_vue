@@ -52,21 +52,13 @@ export default {
         this.socket.on('loggedIn', (peerId) => {
           connectToNewUser(peerId, stream);
         });
-
+        
       })
-
-      // this.socket.on('user-disconnected', peerId => {
-      //   if (peers[peerId]) peers[peerId].close()
-      // })
-
-      // this.socket.emit('newuser');
-      // this.socket.on('user-connected', () => {
-      //   connectToNewUser();
-      // })
       myPeer.on('open', id => {
         console.log('peerIdの生成は成功.videoから', id)
         console.log(this.username)
         this.socket.emit('newuser', this.username, id);
+  
       })
 
      

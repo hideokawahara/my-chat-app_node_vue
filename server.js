@@ -48,6 +48,7 @@ io.on("connection", (socket) => {
   // 1 ここがログインのクライアントにつながってる。
   socket.on("newuser", (username, peerId) => {
     console.log(`${username} がログインしました`);
+    console.log(peerId)
     socket.username = username;
     users.push(socket);
     // ビデオの実装
