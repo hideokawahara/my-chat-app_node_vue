@@ -53,10 +53,11 @@ io.on("connection", (socket) => {
     io.emit("userOnline", socket.username);
   });
 
-  socket.on("newuser2", (username, peerId) => {
+  socket.on("newuserFromPeer", (username, peerId) => {
     // ビデオの実装
+    // このままだと同じユーザー名の人同士でしかグループ通話出来ない。ユーザー名がルームIDになる
     socket.join(username);
-    socket.to(username).broadcast.emit("loggedIn2", peerId);
+    socket.to(username).broadcast.emit("loggedInSendingVideo", peerId);
   });
 
 
