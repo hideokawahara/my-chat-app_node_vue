@@ -142,11 +142,32 @@ export default {
         <span>Play Video</span>
       `
       document.querySelector('.main__video_button').innerHTML = html;
-    }
+    },
+    // movingTheVideo(event) {
+    //   console.log(event)
+    //   const moveVideo = document.querySelector('video')
+    //   console.log(moveVideo)
+    //   moveVideo.style.left = `${event.clientX - 100}px`;
+    //   moveVideo.style.top = `${event.clientY - 100}px`;
+    // }
   },
 	mounted() {
 		this.makevideo();
 	}
+}
+document.addEventListener('mousedown', () => {
+  document.addEventListener('mousemove', movingTheVideo)
+  document.addEventListener('mouseup', () => {
+    document.removeEventListener('mousemove', movingTheVideo)
+  })
+})
+
+const movingTheVideo = (event) => {
+  // console.log(event)
+  const moveVideo = document.querySelector('video')
+  console.log(moveVideo)
+  moveVideo.style.left = `${event.clientX - 100}px`;
+  moveVideo.style.top = `${event.clientY - 100}px`;
 }
 </script>
 
@@ -162,5 +183,7 @@ video {
   height: 100px;
   // border-radius: 100%;
   object-fit: cover;
+  position: absolute;
+  border-radius: 50%;
 }
 </style>
