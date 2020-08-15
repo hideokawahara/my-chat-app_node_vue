@@ -8,7 +8,7 @@
       <div class="heart"></div>
     </div>
       <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
-      <VideoRoom v-bind:username="username" v-bind:socket="socket" />
+      <VideoRoom v-bind:username="username" v-bind:socket="socket" v-bind:roomname="roomname" />
   </div>
 </template>
 <script>
@@ -26,7 +26,8 @@ export default {
       username: "",
       socket: io(process.env.VUE_APP_API_UR),
       messages: [],
-      users: []
+      users: [],
+      roomname: ""
     }
   },
   methods: {
@@ -61,6 +62,13 @@ export default {
     if (!this.username) {
 			this.username = "ゲスト";
     }
+
+    // 1,部屋の名前の実装。
+    this.roomname = prompt("部屋の名前を教えてください", "デフォルト")
+    if (!this.roomname) {
+			this.roomname = "デフォルト";
+    }
+    // ここまで
     this.joinServer();
   }
 }

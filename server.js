@@ -53,11 +53,12 @@ io.on("connection", (socket) => {
     io.emit("userOnline", socket.username);
   });
 
-  socket.on("newuserFromPeer", (username, peerId) => {
+  socket.on("newuserFromPeer", (roomname, peerId) => {
     // ビデオの実装
     // このままだと同じユーザー名の人同士でしかグループ通話出来ない。ユーザー名がルームIDになる
-    socket.join(username);
-    socket.to(username).broadcast.emit("loggedInSendingVideo", peerId);
+    // roomnameを作り、同じroomnameを持つ人同士でビデオ通話できる。
+    socket.join(roomname);
+    socket.to(roomname).broadcast.emit("loggedInSendingVideo", peerId);
   });
 
 
@@ -82,52 +83,9 @@ io.on("connection", (socket) => {
     console.log(`${socket.username} がログアウトしました`);
     io.emit("userLeft", socket.username);
     users.splice(users.indexOf(socket), 1);
-    // socket.to(username).broadcast.emit("user-disconnected", peerId);
+    // socket.to(roomname).broadcast.emit("user-disconnected-video", peerId);
   });
 });
-
-// ここまで
-
-// 前の物
-
-// io.on("connection", socket => {
-//   socket.emit('loggedIn', {
-//     users: users.map(s => s.username),
-//     messages: messages
-//   });
-
-//   socket.on('newuser', username => {
-//     console.log(`${username} がログインしました`);
-//     socket.username = username;
-//     users.push(socket);
-
-//     io.emit('userOnline', socket.username);
-//   });
-
-//   socket.on('msg', msg => {
-//     let message = new ChatModel({
-//       username: socket.username,
-//       msg: msg
-//     });
-
-//     message.save((err, result) => {
-//       if (err) throw err;
-
-//       messages.push(result);
-
-//       io.emit('msg', result);
-//     });
-
-  
-//   });
-
-//   // Disconnect
-//   socket.on("disconnect", () => {
-//     console.log(`${socket.username} がログアウトしました`);
-//     io.emit("userLeft", socket.username);
-//     users.splice(users.indexOf(socket), 1);
-//   });
-// });
 
 // ここまで
 

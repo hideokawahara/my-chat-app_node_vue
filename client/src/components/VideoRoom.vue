@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>test</h1>
-    <h2>{{ username }}</h2>
+    <p>部屋名：{{ roomname }}</p>
+    <h2>ユーザー名：{{ username }}</h2>
     <div class="main">
       <div class="main__left">
         <div class="main__videos">
@@ -9,7 +9,7 @@
 
           </div>
         </div>
-        <div class="main__controls">
+        <div class="main__controls" style="width: 100px">
           <div class="main__controls__block">
             <div @click="muteUnmute" class="main__controls__button main__mute_button">
               <i class="fas fa-microphone"></i>
@@ -31,7 +31,7 @@ import Peer from "peerjs";
 let myVideoStream;
 export default {
   name: 'videoroom',
-	props: ['username', 'socket'],
+	props: ['username', 'socket', 'roomname'],
 	data: function () {
 		return {
 		}
@@ -71,8 +71,15 @@ export default {
       myPeer.on('open', id => {
         console.log('peerIdの生成は成功.videoから', id)
         console.log(this.username)
-        this.socket.emit('newuserFromPeer', this.username, id);
+        console.log(this.roomname)
+        // this.socket.emit('newuserFromPeer', this.username, id);
+        this.socket.emit('newuserFromPeer', this.roomname, id);
       })
+
+      // this.socket.on('user-disconnected-video', peerId => {
+      //   if (peers[peerId]) peers[peerId].close()
+      // })
+
       const connectToNewUser = (peerId, stream) => {
         console.log(22, peerId)
         const call = myPeer.call(peerId, stream)
@@ -183,7 +190,9 @@ video {
   height: 100px;
   // border-radius: 100%;
   object-fit: cover;
-  position: absolute;
+  // position: absolute;
   border-radius: 50%;
 }
+
+
 </style>
