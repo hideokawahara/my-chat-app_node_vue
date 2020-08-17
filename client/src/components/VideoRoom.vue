@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <p>部屋名：{{ roomname }}</p>
-    <h2>ユーザー名：{{ username }}</h2>
+  <div class="mainVideoRoom">
+    <div class="videoName">
+      <p class="myRoomAndUserName">部屋名：{{ roomname }}</p>
+      <p class="myRoomAndUserName">ユーザー名：{{ username }}</p>
+    </div>
     <div class="main">
       <div class="main__left">
         <div class="main__videos">
@@ -11,13 +13,13 @@
         </div>
         <div class="main__controls" style="width: 100px">
           <div class="main__controls__block">
-            <div @click="muteUnmute" class="main__controls__button main__mute_button">
+            <div @click="muteUnmute" class="main__controls__block__button main__mute_button">
               <i class="fas fa-microphone"></i>
-              <span>ミュート</span>
+              <button>ミュート</button>
             </div>
-            <div @click="playStop" class="main__controls__button main__video_button">
+            <div @click="playStop" class="main__controls__block__button main__video_button">
               <i class="fas fa-video"></i>
-              <span>非表示</span>
+              <button>非表示</button>
             </div>
           </div>
         </div>
@@ -114,14 +116,14 @@ export default {
     setMuteButton() {
       const html = `
         <i class="fas fa-microphone"></i>
-        <span>Mute</span>
+        <button>ミュート</button>
       `
       document.querySelector('.main__mute_button').innerHTML = html;
     },
     setUnmuteButton() {
       const html = `
         <i class="unmute fas fa-microphone-slash"></i>
-        <span>Unmute</span>
+        <button>解除</button>
       `
       document.querySelector('.main__mute_button').innerHTML = html;
     },
@@ -139,14 +141,14 @@ export default {
     setStopVideo() {
       const html = `
         <i class="fas fa-video"></i>
-        <span>Stop Video</span>
+        <button>停止</button>
       `
       document.querySelector('.main__video_button').innerHTML = html;
     },
     setPlayVideo() {
       const html = `
       <i class="stop fas fa-video-slash"></i>
-        <span>Play Video</span>
+        <button>解除</button>
       `
       document.querySelector('.main__video_button').innerHTML = html;
     },
@@ -179,10 +181,58 @@ const movingTheVideo = (event) => {
 </script>
 
 <style lang="scss">
-#video-grid {
+
+.mainVideoRoom {
+  margin-top: 0.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  .videoName {
+    align-items: center;
+    display: flex;
+    .myRoomAndUserName {
+      background-color: #f17091;
+      font-family: 'Lato', 'Noto Sans JP', 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+      color: #fff;
+      border-radius: 40px;
+      padding: 1px;
+      margin-right: 1rem;
+    }
+  }
+  .main {
+    .main__left {
+      .main__videos {
+        display: inline-block;
+        // display: flex;
+        // margin: auto;
+        // margin: 0 auto;
+        // justify-content: center;
+        #video-grid {
+          // display: flex;
+          // display:inline-block;
+          flex-direction: row-reverse;
+          justify-content: center;
+        }
+      }
+    }
+    &__controls {
+      display: inline-block;
+      &__block {
+        display: inline-table;
+        &__button {
+          button {
+            background-color: rgba(255, 0, 119, 0.712);
+            border-color: #1886b8;
+            color: #fff;
+            margin-top: 0.5rem;
+            border-radius: 350%;
+          }
+        }
+      }
+    }
+  }
 }
+
+
 
 video {
   // flex: 1;
@@ -192,6 +242,42 @@ video {
   object-fit: cover;
   // position: absolute;
   border-radius: 50%;
+}
+
+@media (max-width: 767px) { 
+  .main {
+    display: flex;
+    justify-content: space-between;
+  }
+  .main__left {
+    display: flex;
+    // justify-content: space-between;
+  }
+  .mainVideoRoom {
+    display: inline-block;
+  }
+  .videoName {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  #video-grid {
+    // display: flex;
+    // display:inline-block;
+    display: inline-flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // margin: 0 auto;
+    
+  }
+  video {
+    // flex: 1;
+    width: 60px;
+    height: 60px;
+    // border-radius: 100%;
+    object-fit: cover;
+    // position: absolute;
+    border-radius: 50%;
+  }
 }
 
 
