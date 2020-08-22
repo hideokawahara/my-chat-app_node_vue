@@ -5,39 +5,45 @@
       <h1 class="logo">conVer</h1>
       <p class="username">あなたの名前: {{ username }}</p>
       <p class="online">今暇な人: {{ users.length }}</p>
-      <div class="heart"></div>
+      <!-- <div class="heart"></div> -->
     </div>
-      <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" />
+      <ChatRoom v-bind:messages="messages" v-on:sendMessage="this.sendMessage" class="chatRoom" />
+      <VideoRoom v-bind:username="username" v-bind:socket="socket" v-bind:roomname="roomname" class="videoRoom" />
   </div>
 </template>
 <script>
 import io from 'socket.io-client';
 import ChatRoom from './components/ChatRoom';
+import VideoRoom from './components/VideoRoom';
 export default {
   name: 'App',
   components: {
-    ChatRoom
+    ChatRoom,
+    VideoRoom
   },
   data: function () {
     return {
       username: "",
       socket: io(process.env.VUE_APP_API_UR),
       messages: [],
-      users: []
+      users: [],
+      roomname: ""
     }
   },
   methods: {
     joinServer: function () {
       this.socket.on('loggedIn', data => {
         this.messages = data.messages;
-				this.users = data.users;
+        this.users = data.users;
+      // 1 ここからサーバーに渡す
 				this.socket.emit('newuser', this.username);
       });
       this.listen();
     },
     listen: function () {
       this.socket.on('userOnline', user => {
-				this.users.push(user);
+        this.users.push(user);
+        console.log('新規ユーザーが入りましたfromApp.vue')
       });
       this.socket.on('userLeft', user => {
 				this.users.splice(this.users.indexOf(user), 1);
@@ -56,6 +62,13 @@ export default {
     if (!this.username) {
 			this.username = "ゲスト";
     }
+
+    // 1,部屋の名前の実装。
+    this.roomname = prompt("部屋の名前を教えてください", "デフォルト")
+    if (!this.roomname) {
+			this.roomname = "デフォルト";
+    }
+    // ここまで
     this.joinServer();
   }
 }
@@ -115,43 +128,44 @@ body {
   }
 }
 
-.heart {
-  position: absolute;
-  // width: 100px;
-  // height: 90px;
-  width: 100px;
-  height: 90px;
-  left: 75%;
-  margin-top: -45px;
-  margin-left: -50px;
-}
-.heart:before,
-.heart:after {
-  position: absolute;
-  content: "";
-  left: 50px;
-  top: 0;
-  // width: 50px;
-  // height: 80px;
-  width: 50px;
-  height: 80px;
-  background: #f78cc7f3;
-  border-radius: 50px 50px 0 0;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-.heart:after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin :100% 100%;
-}
+// .heart {
+//   display: none;
+//   position: absolute;
+//   // width: 100px;
+//   // height: 90px;
+//   width: 100px;
+//   height: 90px;
+//   left: 75%;
+//   margin-top: -45px;
+//   margin-left: -50px;
+// }
+// .heart:before,
+// .heart:after {
+//   position: absolute;
+//   content: "";
+//   left: 50px;
+//   top: 0;
+//   // width: 50px;
+//   // height: 80px;
+//   width: 50px;
+//   height: 80px;
+//   background: #f78cc7f3;
+//   border-radius: 50px 50px 0 0;
+//   transform: rotate(-45deg);
+//   transform-origin: 0 100%;
+// }
+// .heart:after {
+//   left: 0;
+//   transform: rotate(45deg);
+//   transform-origin :100% 100%;
+// }
 
-.heart {
-  animation: pounding .5s linear infinite alternate;
-}
+// .heart {
+//   animation: pounding .5s linear infinite alternate;
+// }
  
-@keyframes pounding{
-  0%{ transform: scale(1.5); }
-  100%{ transform: scale(1); }
-}
+// @keyframes pounding{
+//   0%{ transform: scale(1.5); }
+//   100%{ transform: scale(1); }
+// }
 </style>

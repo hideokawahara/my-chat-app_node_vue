@@ -2,7 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 
+// import VuePeerJS from "vue-peerjs";
+// import Peer from "peerjs";
+
+
 Vue.use(BootstrapVue)
+
+// Vue.use(VuePeerJS, new Peer({}))
 
 Vue.config.productionTip = false
 

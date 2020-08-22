@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const path = require('path');
 const serveStatic = require('serve-static');
 const http = require("http").Server(app);
@@ -7,6 +8,19 @@ const mongoose = require("mongoose");
 let users = [];
 let messages = [];
 
+// ここから改造しています。
+
+// cors使うとバグりやすい？？
+// const cors = require("cors");
+// app.use(cors());
+
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(http, {
+  debug: true,
+});
+app.use("/peerjs", peerServer);
+
+// ここまで
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chatapp');
 
@@ -23,25 +37,36 @@ ChatModel.find((err, result) => {
   messages = result;
 });
 
+// ここからがsocketの改造
 
-io.on("connection", socket => {
-  socket.emit('loggedIn', {
-    users: users.map(s => s.username),
-    messages: messages
+io.on("connection", (socket) => {
+  socket.emit("loggedIn", {
+    users: users.map((s) => s.username),
+    messages: messages,
   });
 
-  socket.on('newuser', username => {
+  // 1 ここがログインのクライアントにつながってる。
+  socket.on("newuser", username => {
     console.log(`${username} がログインしました`);
     socket.username = username;
-    users.push(socket);
-
-    io.emit('userOnline', socket.username);
+    users.push(socket);  
+    io.emit("userOnline", socket.username);
   });
 
-  socket.on('msg', msg => {
+  socket.on("newuserFromPeer", (roomname, peerId) => {
+    // ビデオの実装
+    // このままだと同じユーザー名の人同士でしかグループ通話出来ない。ユーザー名がルームIDになる
+    // roomnameを作り、同じroomnameを持つ人同士でビデオ通話できる。
+    socket.join(roomname);
+    socket.to(roomname).broadcast.emit("loggedInSendingVideo", peerId);
+  });
+
+
+
+  socket.on("msg", (msg) => {
     let message = new ChatModel({
       username: socket.username,
-      msg: msg
+      msg: msg,
     });
 
     message.save((err, result) => {
@@ -49,10 +74,8 @@ io.on("connection", socket => {
 
       messages.push(result);
 
-      io.emit('msg', result);
+      io.emit("msg", result);
     });
-
-  
   });
 
   // Disconnect
@@ -60,8 +83,11 @@ io.on("connection", socket => {
     console.log(`${socket.username} がログアウトしました`);
     io.emit("userLeft", socket.username);
     users.splice(users.indexOf(socket), 1);
+    // socket.to(roomname).broadcast.emit("user-disconnected-video", peerId);
   });
 });
+
+// ここまで
 
 if (process.env.NODE_ENV === 'production') {
   // Static folder
