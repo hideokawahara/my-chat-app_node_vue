@@ -44,8 +44,10 @@ export default {
         path: '/peerjs',
         host: '/',
         // port: '443'
-        port: '3000'
+        // port: '3000'
+        port: process.env.VUE_APP_PEER_PORT
       })
+      console.log(this.port)
       console.log('peerの生成は成功。videooから', myPeer)
       const videoGrid = document.getElementById('video-grid')
       const myVideo = document.createElement('video');
@@ -194,7 +196,7 @@ const movingTheVideo = (event) => {
       font-family: 'Lato', 'Noto Sans JP', 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
       color: #fff;
       border-radius: 40px;
-      padding: 1px;
+      padding: 2px 3px;
       margin-right: 1rem;
     }
   }
@@ -224,7 +226,7 @@ const movingTheVideo = (event) => {
             border-color: #1886b8;
             color: #fff;
             margin-top: 0.5rem;
-            border-radius: 350%;
+            border-radius: 20%;
           }
         }
       }
