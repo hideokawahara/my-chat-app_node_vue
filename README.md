@@ -5,7 +5,8 @@ conVerはコミュニケーションアプリケーションです。
 
 # DEMO
  
-
+[![thumbnail](https://pbs.twimg.com/ext_tw_video_thumb/1300112977496924165/pu/img/Em9OPWF_JY18h_5D.jpg)](https://twitter.com/hinoizuryu27/status/1300113485703999489/video/1)
+デモ動画はTwitterのリンクを載せています。そちらで実際の動作をご確認いただけます。
  
 # Features
  
